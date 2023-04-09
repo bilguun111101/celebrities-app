@@ -9,8 +9,8 @@ export const RegisterModal = () => {
     const loginModal = useLogInModal();
     const registerModal = useRegisterModal();
 
-    const [name, setName] = useState("");
     const [email, setEmail] = useState("");
+    const [confirm, setConfirm] = useState("");
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [isLoading, setIsLoading] = useState(false);
@@ -22,15 +22,22 @@ export const RegisterModal = () => {
     }, [isLoading, registerModal, loginModal])
 
     const onSubmit = useCallback(async() => {
+        if(!(password === confirm)) {
+            toast.error('Your confirm password is wrong!!!');
+            return;
+        }
         try {
             setIsLoading(true);
-
-            await axios.post('https://1ecxbe7mfc.execute-api.us-east-1.amazonaws.com/dev/signup', {
-                name,
-                email,
-                username,
-                password
-            });
+            const response = await axios({
+                method: 'POST',
+                url: 'https://1ecxbe7mfc.execute-api.us-east-1.amazonaws.com/dev/signup',
+                data: {
+                    email,
+                    username,
+                    password
+                },
+            })
+            console.log(response);
 
             toast.success('Account created.');
 
@@ -42,36 +49,40 @@ export const RegisterModal = () => {
             registerModal.onClose();
         } catch (error) {
             console.log(error)
-            // toast.error('Something went wrong');
+            toast.error('Something went wrong');
         } finally {
             setIsLoading(false);
         }
-    }, [registerModal, email, password, username, name])
+    }, [registerModal, email, password, username])
 
     const bodyContent = (
         <div className="flex flex-col gap-4">
             <Input
+                type="email"
                 placeholder="Email"
                 onChange={(ev) => setEmail(ev.target.value)}
                 value={email}
                 disabled={isLoading}
             />
             <Input
-                placeholder="Name"
-                onChange={(ev) => setName(ev.target.value)}
-                value={name}
-                disabled={isLoading}
-            />
-            <Input
+                type="text"
                 placeholder="Username"
                 onChange={(ev) => setUsername(ev.target.value)}
                 value={username}
                 disabled={isLoading}
             />
             <Input
+                type="password"
                 placeholder="Password"
                 onChange={(ev) => setPassword(ev.target.value)}
                 value={password}
+                disabled={isLoading}
+            />
+            <Input
+                type="password"
+                placeholder="Confirm password"
+                onChange={(ev) => setConfirm(ev.target.value)}
+                value={confirm}
                 disabled={isLoading}
             />
         </div>

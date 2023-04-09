@@ -19,6 +19,7 @@ const Input: FC<InputProps> = ({
     return (
         <input 
             type={type} 
+            value={value}
             disabled={disabled}
             onChange={onChange}
             placeholder={placeholder}

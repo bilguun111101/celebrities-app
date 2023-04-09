@@ -15,6 +15,7 @@ export const Layout: FC<PropsWithChildren> = ({ children }) => {
         px-16
         flex 
         justify-between 
+        items-center
         bg-blue-500 
         absolute
       '>

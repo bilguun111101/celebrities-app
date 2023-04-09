@@ -2,6 +2,7 @@ import axios from "axios";
 import { Button } from "@/components";
 import { useImageList } from "@/context";
 import { useCallback, useEffect, useState } from "react";
+import { toast } from "react-hot-toast";
 
 const Home = () => {
     const [approachUrl, setApproachUrl] = useState<string | undefined>(undefined);
@@ -12,8 +13,6 @@ const Home = () => {
     const sendFile = useCallback(async() => {
         if(!selectFile) return;
             const Key = selectFile?.name;
-            const formData = new FormData();
-            formData.append('selectedFile', selectFile);
             try {
                 const response = await axios({
                     method: 'POST',
@@ -23,8 +22,14 @@ const Home = () => {
                         Type: selectFile?.type
                     },
                 })
-                console.log(response?.data.uploadUrl);
-                setApproachUrl(response?.data.uploadUrl);
+                await fetch(response?.data.uploadUrl, {
+                    method: 'PUT',
+                    body: selectFile
+                })
+                setSelectFile(undefined);
+                setWindowImage("");
+                setApproach(true);
+                toast.success("Celebrity's image upload is successful");
             } catch (error) { console.log(error) }
     }, [selectFile])
 
@@ -37,21 +42,21 @@ const Home = () => {
         setSelectFile(file);
     }
 
-    useEffect(() => {
-        if(!approachUrl || !selectFile) return;
-        (async() => {
-            try {
-                await fetch(approachUrl, {
-                    method: 'PUT',
-                    body: selectFile
-                })
-                setSelectFile(undefined);
-                setApproachUrl(undefined);
-                setWindowImage("");
-                setApproach(true);
-            } catch (error) { console.log(error) }
-        })()
-    }, [approachUrl])
+    // useEffect(() => {
+    //     if(!approachUrl || !selectFile) return;
+    //     (async() => {
+    //         try {
+    //             await fetch(approachUrl, {
+    //                 method: 'PUT',
+    //                 body: selectFile
+    //             })
+    //             setSelectFile(undefined);
+    //             setApproachUrl(undefined);
+    //             setWindowImage("");
+    //             setApproach(true);
+    //         } catch (error) { console.log(error) }
+    //     })()
+    // }, [approachUrl])
 
     return (
         <section className="w-full h-screen p-3">
