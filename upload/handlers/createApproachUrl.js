@@ -1,5 +1,4 @@
 const AWS = require('aws-sdk');
-const lambda = new AWS.Lambda();
 
 const s3 = new AWS.S3();
 const uploadBucket = 'leaf3bbilguunbucket';
