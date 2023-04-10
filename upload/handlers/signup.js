@@ -20,7 +20,6 @@ exports.handler = async(event) => {
         TableName: 'celebrities',
         Item: user
     });
-    // return response;
     return {
         statusCode: 200,
         headers: {

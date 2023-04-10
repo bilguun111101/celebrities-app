@@ -10,6 +10,6 @@ interface LoginModalStore {
 export const useLogInModal = create<LoginModalStore>((set) => ({
     email: '',
     username: '',
-    onEmail: (email: string) => set({ email }),
-    onUsername: (username: string) => set({ username })
+    onEmail: (e: string) => set({ email: e }),
+    onUsername: (u: string) => set({ username: u })
 }))

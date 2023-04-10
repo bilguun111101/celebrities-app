@@ -30,6 +30,7 @@ files:
   lastImage: handlers/lastImage.handler
   send: handlers/send.handler
   signup: handlers/signup.handler
+  login: handlers/login.handler
 
 # --
 
@@ -110,5 +111,19 @@ functions:
           path: signup
           method: post
           cors: true
-  # send: 
-  #   handler: ${self:files.send}
+  login:
+    handler: ${self:files.login}
+    events:
+      - http:
+          path: login
+          method: post
+          cors:
+            origin: '*'
+            headers:
+              - Content-Type
+              - X-Amz-Date
+              - Authorization
+              - X-Api-Key
+              - X-Amz-Security-Token
+              - X-Amz-User-Agent
+            allowCredentials: true
