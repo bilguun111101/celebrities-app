@@ -35,6 +35,17 @@ files:
 
 resources:
   Resources:
+    # remove api gateway cors error section
+    GatewayResponseDefault4XX:
+      Type: 'AWS::ApiGateway::GatewayResponse'
+      Properties:
+        ResponseParameters:
+          gatewayresponse.header.Access-Control-Allow-Origin: "'*'"
+          gatewayresponse.header.Access-Control-Allow-Headers: "'*'"
+        ResponseType: DEFAULT_4XX
+        RestApiId:
+          Ref: 'ApiGatewayRestApi'
+    # ----
     S3Bucket:
       Type: AWS::S3::Bucket
       Properties:
@@ -67,26 +78,9 @@ resources:
               Effect: Allow
               Principal: '*'
 
-# resources:
-#   Resources:
-#     bbdevs:
-#       Type: AWS::S3::Bucket
-#       Properties:
-#         BucketName: ${self:some.s3.bucket}
-#     SampleBucketPolicy:
-#       Type: AWS::S3::BucketPolicy
-#       Properties:
-#         Bucket: !Ref bbdevs
-#         PolicyDocument:
-#           Statement:
-#             - Action:
-#                 - "s3:GetObject"
-#                 - "s3:PutObject"
-#               Effect: Allow
-#               Resource:
-#                 - arn:aws:s3:::${self:some.s3.bucket}/*
-#               Principal: '*'
 
+
+# some functions
 functions:
   createApproachUrl:
     handler: ${self:files.createApproachUrl}

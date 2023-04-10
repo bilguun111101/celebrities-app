@@ -2,6 +2,8 @@ import Input from "../Input";
 import Modal from "../Modal";
 import { useCallback, useState } from "react";
 import { useLogInModal, useRegisterModal } from "@/hooks";
+import { toast } from "react-hot-toast";
+import axios from "axios";
 
 export const LoginModal = () => {
     const loginModal = useLogInModal();
@@ -19,6 +21,10 @@ export const LoginModal = () => {
     }, [isLoading, registerModal, loginModal])
 
     const onSubmit = useCallback(async() => {
+        if(!email || !password) {
+            toast.error("You must input you authentication!!!");
+            return;
+        }
         try {
             setIsLoading(true);
             loginModal.onClose();
