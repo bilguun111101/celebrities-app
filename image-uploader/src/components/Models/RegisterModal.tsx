@@ -22,13 +22,17 @@ export const RegisterModal = () => {
     }, [isLoading, registerModal, loginModal])
 
     const onSubmit = useCallback(async() => {
+        if(!email || !username || !confirm || !password) {
+            toast.error("You must input your some information!!!")
+            return;
+        }
         if(!(password === confirm)) {
             toast.error('Your confirm password is wrong!!!');
             return;
         }
         try {
             setIsLoading(true);
-            const response = await axios({
+            await axios({
                 method: 'POST',
                 url: 'https://1ecxbe7mfc.execute-api.us-east-1.amazonaws.com/dev/signup',
                 data: {
@@ -37,7 +41,6 @@ export const RegisterModal = () => {
                     password
                 },
             })
-            console.log(response);
 
             toast.success('Account created.');
 
